@@ -2,6 +2,7 @@
 import numpy as np
 import streamlit as st
 from keras.models import load_model
+from PIL import Image
 
 # Loading the Model
 model = load_model('dog_breed.h5')
@@ -21,14 +22,19 @@ submit = st.button('Predict')
 if submit:
     if dog_image is not None:
         try:
-            # Convert the file to an array
-            file_bytes = np.asarray(bytearray(dog_image.read()), dtype=np.uint8)
-
-            # Displaying the image
-            st.image(file_bytes, channels="BGR")
-
+            # Convert the file to a PIL Image
+            pil_image = Image.open(dog_image)
+            # Resize the image
+            resized_image = pil_image.resize((224, 224))
+            # Convert the PIL Image to a NumPy array
+            image_array = np.array(resized_image)
+            # Normalize the image
+            normalized_image = image_array / 255.0
+            # Expand dimensions to match the model's input shape
+            input_data = np.expand_dims(normalized_image, axis=0)
+            
             # Make Prediction
-            Y_pred = model.predict(file_bytes)
+            Y_pred = model.predict(input_data)
             breed = CLASS_NAMES[np.argmax(Y_pred)]
 
             st.title(f"The Dog Breed is {breed}")
