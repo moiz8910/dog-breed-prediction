@@ -28,6 +28,9 @@ if submit:
             resized_image = pil_image.resize((224, 224))
             # Convert the PIL Image to a NumPy array
             image_array = np.array(resized_image)
+            # Convert image to RGB if it has 4 channels
+            if image_array.shape[2] == 4:
+                image_array = image_array[:, :, :3]
             # Normalize the image
             normalized_image = image_array / 255.0
             # Expand dimensions to match the model's input shape
