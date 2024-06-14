@@ -2,3 +2,4 @@ Keras
 opencv_python
 numpy
 streamlit
+opencv-python-headless
