@@ -1,5 +1,7 @@
-Keras
 opencv_python
-numpy
-streamlit
-opencv-python-headless
+streamlit==1.35.0
+opencv-python-headless==4.10.0.82
+numpy==1.26.4
+keras==3.3.3
+pandas==2.2.2
+h5py==3.11.0
