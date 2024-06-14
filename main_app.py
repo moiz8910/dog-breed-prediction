@@ -1,7 +1,6 @@
 # Library imports
 import numpy as np
 import streamlit as st
-import cv2
 from keras.models import load_model
 
 # Loading the Model
@@ -22,29 +21,18 @@ submit = st.button('Predict')
 if submit:
     if dog_image is not None:
         try:
-            # Convert the file to an opencv image
+            # Convert the file to an array
             file_bytes = np.asarray(bytearray(dog_image.read()), dtype=np.uint8)
-            opencv_image = cv2.imdecode(file_bytes, 1)
 
             # Displaying the image
-            st.image(opencv_image, channels="BGR")
-            
-            # Resizing the image
-            opencv_image = cv2.resize(opencv_image, (224, 224))
-            
-            # Convert image to 4 Dimensions
-            opencv_image = np.expand_dims(opencv_image, axis=0)
-            
+            st.image(file_bytes, channels="BGR")
+
             # Make Prediction
-            Y_pred = model.predict(opencv_image)
+            Y_pred = model.predict(file_bytes)
             breed = CLASS_NAMES[np.argmax(Y_pred)]
-            
+
             st.title(f"The Dog Breed is {breed}")
-        
-        except BrokenPipeError:
-            st.error("An error occurred while making the prediction. Please try again.")
-            st.write("BrokenPipeError encountered during prediction.")
-        
+
         except Exception as e:
             st.error(f"An unexpected error occurred: {str(e)}")
             st.write(f"Unexpected error: {str(e)}")
