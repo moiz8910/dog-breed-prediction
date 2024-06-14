@@ -5,3 +5,4 @@ pandas==2.2.2
 h5py==3.11.0
 tensorflow
 Pillow
+opencv-python
